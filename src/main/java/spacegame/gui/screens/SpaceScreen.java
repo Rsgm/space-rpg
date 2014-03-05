@@ -18,48 +18,53 @@ public class SpaceScreen extends DefaultScreen {
         super(game);
 
         cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        cam.position.set(10f, 10f, 10f);
+        cam.position.set(10f, 0f, 0f);
         cam.lookAt(0, 0, 0);
         cam.near = 0.1f;
         cam.far = 300f;
         cam.update();
 
+
         ModelBatch batch = new ModelBatch();
 
-        float[] verts = new float[24];
+        float[] verts = new float[3 * 3 * 3];
         int i = 0;
 
-        verts[i++] = -1; // x1
-        verts[i++] = -1; // y1
-        verts[i++] = -2; // z1
-        verts[i++] = 1; // color
-        verts[i++] = 0; // color
-        verts[i++] = 0; // color
-        verts[i++] = 1; // color
+        verts[i++] = -4; // x
+        verts[i++] = 0; // y
+        verts[i++] = 0; // z
 
-        verts[i++] = 1f; // x2
-        verts[i++] = -1; // y2
-        verts[i++] = -2; // z2
-        verts[i++] = .7f; // color
-        verts[i++] = 0; // color
-        verts[i++] = 0; // color
-        verts[i++] = 1; // color
+        verts[i++] = 4; // x
+        verts[i++] = 0; // y
+        verts[i++] = 0; // z
 
-        verts[i++] = 1f; // x3
-        verts[i++] = 1f; // y2
-        verts[i++] = 2f; // z2
-        verts[i++] = 1; // color
-        verts[i++] = 1; // color
-        verts[i++] = 1; // color
-        verts[i++] = 1; // color
+        verts[i++] = 0f; // x
+        verts[i++] = 0f; // y
+        verts[i++] = 4f; // z
 
-        verts[i++] = -1; // x4
-        verts[i++] = 1f; // y4
-        verts[i++] = 2f; // z4
-        verts[i++] = 0; // color
-        verts[i++] = .6f; // color
-        verts[i++] = 1; // color
-        verts[i++] = 1; // color
+        verts[i++] = 0; // x
+        verts[i++] = 4; // y
+        verts[i++] = 0; // z
+
+        verts[i++] = 4; // x
+        verts[i++] = 0; // y
+        verts[i++] = 0; // z
+
+        verts[i++] = 0f; // x
+        verts[i++] = 0f; // y
+        verts[i++] = 4f; // z
+
+        verts[i++] = 0; // x
+        verts[i++] = 4; // y
+        verts[i++] = 0; // z
+
+        verts[i++] = -4; // x
+        verts[i++] = 0; // y
+        verts[i++] = 0; // z
+
+        verts[i++] = 0f; // x
+        verts[i++] = 0f; // y
+        verts[i++] = 4f; // z
 
 //        ModelMesh mesh = new ModelMesh();
 //        mesh.vertices = verts;
@@ -69,8 +74,8 @@ public class SpaceScreen extends DefaultScreen {
 //
 //        new ModelInstance(m);
 
-        mesh = new Mesh(true, 8, 0,  // static mesh with 4 vertices and no indices
-                VertexAttribute.Position(), VertexAttribute.Color());
+        mesh = new Mesh(true, 9, 0,  // static mesh with 4 vertices and no indices
+                VertexAttribute.Position());
 
         mesh.setVertices(verts);
 
@@ -88,7 +93,7 @@ public class SpaceScreen extends DefaultScreen {
 
         batch.setProjectionMatrix(cam.combined);
         batch.begin();
-        mesh.render(Assets.shaders.get(Assets.Shader.GDX_DEFAULT), GL30.GL_TRIANGLE_FAN);
+        mesh.render(Assets.shaders.get(Assets.Shader.GDX_DEFAULT), GL30.GL_TRIANGLES);
         batch.end();
     }
 
