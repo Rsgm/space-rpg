@@ -1,6 +1,25 @@
+# Compiled source #
+###################
 *.class
 
 # Package Files #
+######################
 *.jar
 *.war
 *.ear
+
+# Logs #
+########
+*.log
+
+# Gradle files #
+################
+build/
+.gradle
+
+# Idea #
+##########
+.idea/
+*.iml
+*.ipr
+*.iws

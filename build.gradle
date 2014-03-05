@@ -1,0 +1,62 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'application'
+
+mainClassName = "spacegame.Main"
+
+group = 'com.github.rsgm'
+description = 'Space RPG'
+version = '0.0.0'
+ext.gdxVersion = "1.0-SNAPSHOT";
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+
+jar {
+    manifest {
+        attributes('Title': '', 'Version': version)
+    }
+}
+
+sourceSets {
+    main {
+        java.srcDirs 'src/main/java/'
+        resources.srcDirs 'src/main/resources/', 'src/test/resources/'
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.8'
+    distributionUrl = 'http://services.gradle.org/distributions/gradle-1.8-all.zip'
+}
+
+task packageSpaceGame(dependsOn: "installApp", type: Zip) {  // replace "SpaceGame" with the name
+    description = 'Packages the install directory to a zip'
+    archiveName = "SpaceGame-${version}.zip"
+    into('SpaceGame/') {
+        from 'build/install/spacerpg/'
+
+        into('bin') {
+            from 'README.md'
+            from 'LICENSE.md'
+            into('docs/') {
+                from 'docs/'
+            }
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+}
+
+dependencies {
+    compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+    compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+    compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+
+    compile files('lib/Path_Finder.jar')
+}
