@@ -2,123 +2,87 @@ package spacegame.gui.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL30;
-import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.graphics.VertexAttribute;
+import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
-import spacegame.gui.Assets;
+import spacegame.random.ShipGen;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SpaceScreen extends DefaultScreen {
-    //        private final Model m;
-    private final Mesh mesh;
+	private final ModelBatch modelBatch;
+	private final Environment environment;
+	private final List<ModelInstance> bodies = new ArrayList<ModelInstance>();
+	private final List<ModelInstance> ships = new ArrayList<ModelInstance>();
 
-    public SpaceScreen(Game game) {
-        super(game);
+	public SpaceScreen(Game game) {
+		super(game);
 
-        cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        cam.position.set(10f, 0f, 0f);
-        cam.lookAt(0, 0, 0);
-        cam.near = 0.1f;
-        cam.far = 300f;
-        cam.update();
+		cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		cam.position.set(10f, 0f, 0f);
+		cam.lookAt(0, 0, 0);
+		cam.near = 0.1f;
+		cam.far = 300f;
+		cam.update();
 
+		modelBatch = new ModelBatch();
 
-        ModelBatch batch = new ModelBatch();
+		environment = new Environment();
+		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
+		PointLight light = new PointLight();
+		//		light.set(.5f, 0, 1, 10, 10, 10, 1);
+		//		environment.add(light);
+		environment.add(new DirectionalLight().set(0f, 0f, 0.8f, -1f, -0.8f, -0.2f));
 
-        float[] verts = new float[3 * 3 * 3];
-        int i = 0;
+		ModelInstance ship = new ShipGen().getShip();
+		ColorAttribute attr = ColorAttribute.createAmbient(.4f, .3f, .9f, 1);
+		ships.add(ship);
+	}
 
-        verts[i++] = -4; // x
-        verts[i++] = 0; // y
-        verts[i++] = 0; // z
+	@Override
+	public void show() {
+		Gdx.input.setInputProcessor(new CameraInputController(cam));
+	}
 
-        verts[i++] = 4; // x
-        verts[i++] = 0; // y
-        verts[i++] = 0; // z
+	@Override
+	public void render(float delta) {
+		super.render(delta);
 
-        verts[i++] = 0f; // x
-        verts[i++] = 0f; // y
-        verts[i++] = 4f; // z
+		modelBatch.begin(cam);
+		modelBatch.render(bodies);
 
-        verts[i++] = 0; // x
-        verts[i++] = 4; // y
-        verts[i++] = 0; // z
+		modelBatch.render(ships);
+		modelBatch.end();
+	}
 
-        verts[i++] = 4; // x
-        verts[i++] = 0; // y
-        verts[i++] = 0; // z
+	@Override
+	public void dispose() {
+		super.dispose();
+	}
 
-        verts[i++] = 0f; // x
-        verts[i++] = 0f; // y
-        verts[i++] = 4f; // z
+	@Override
+	public void resize(int width, int height) {
 
-        verts[i++] = 0; // x
-        verts[i++] = 4; // y
-        verts[i++] = 0; // z
+	}
 
-        verts[i++] = -4; // x
-        verts[i++] = 0; // y
-        verts[i++] = 0; // z
+	@Override
+	public void hide() {
 
-        verts[i++] = 0f; // x
-        verts[i++] = 0f; // y
-        verts[i++] = 4f; // z
+	}
 
-//        ModelMesh mesh = new ModelMesh();
-//        mesh.vertices = verts;
-//     ModelData modelData = new ModelData();
-//        modelData.addMesh(mesh);
-//        m = new Model(modelData);
-//
-//        new ModelInstance(m);
+	@Override
+	public void pause() {
 
-        mesh = new Mesh(true, 9, 0,  // static mesh with 4 vertices and no indices
-                VertexAttribute.Position());
+	}
 
-        mesh.setVertices(verts);
+	@Override
+	public void resume() {
 
-        // TODO read https://github.com/mattdesl/lwjgl-basics/wiki/LibGDX-Meshes
-    }
-
-    @Override
-    public void show() {
-        Gdx.input.setInputProcessor(new CameraInputController(cam));
-    }
-
-    @Override
-    public void render(float delta) {
-        super.render(delta);
-
-        batch.setProjectionMatrix(cam.combined);
-        batch.begin();
-        mesh.render(Assets.shaders.get(Assets.Shader.GDX_DEFAULT), GL30.GL_TRIANGLES);
-        batch.end();
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
+	}
 }
