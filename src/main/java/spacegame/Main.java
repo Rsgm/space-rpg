@@ -12,7 +12,7 @@ public class Main {
         config.resizable = false;
         config.useGL30 = true;
         config.samples = 8; // can go to 16 or 32 I think
-        config.title = "Hak'd";
+        config.title = "space game";
         new LwjglApplication(game, config);
     }
 }

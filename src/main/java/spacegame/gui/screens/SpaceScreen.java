@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
-import spacegame.random.ShipGen;
+import spacegame.random.BattleshipGen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ public class SpaceScreen extends DefaultScreen {
         super(game);
 
         cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        cam.position.set(10f, 0f, 0f);
+        cam.position.set(0f, 0f, 10f);
         cam.lookAt(0, 0, 0);
         cam.near = 0.1f;
         cam.far = 300f;
@@ -35,19 +35,19 @@ public class SpaceScreen extends DefaultScreen {
 
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
-        PointLight light = new PointLight();
-        //		light.set(.5f, 0, 1, 10, 10, 10, 1);
-        //		environment.add(light);
-        environment.add(new DirectionalLight().set(0f, 0f, 0.8f, -1f, -0.8f, -0.2f));
+        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+        environment.add(new PointLight().set(1, 0, .3f, 10, 10, 10, 10));
 
-        ModelInstance ship = new ShipGen().getShip();
-        ColorAttribute attr = ColorAttribute.createAmbient(.4f, .3f, .9f, 1);
+        ModelInstance ship = new BattleshipGen().getShip();
         ships.add(ship);
     }
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(new CameraInputController(cam));
+        CameraInputController input = new CameraInputController(cam);
+        input.zoom(-15f);
+        Gdx.input.setInputProcessor(input);
+
     }
 
     @Override
@@ -55,9 +55,9 @@ public class SpaceScreen extends DefaultScreen {
         super.render(delta);
 
         modelBatch.begin(cam);
-        modelBatch.render(bodies);
+        modelBatch.render(bodies, environment);
 
-        modelBatch.render(ships);
+        modelBatch.render(ships, environment);
         modelBatch.end();
     }
 

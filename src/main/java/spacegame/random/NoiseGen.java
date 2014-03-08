@@ -12,7 +12,7 @@ import libnoiseforjava.util.NoiseMap;
 import libnoiseforjava.util.RendererImage;
 
 public class NoiseGen {
-    private static final double NOISE_GENERATION_SIZE = 512;
+    private static final double NOISE_GENERATION_SIZE = 256;
 
     public static Texture getTexture(TextureNoise type) {
         try {
@@ -30,8 +30,8 @@ public class NoiseGen {
                     noise = battleShip();
 
                     renderer.clearGradient();
-                    renderer.addGradientPoint(0, new ColorCafe(50, 50, 50, 255));
-                    renderer.addGradientPoint(1, new ColorCafe(150, 150, 150, 255));
+                    renderer.addGradientPoint(0, new ColorCafe(40, 40, 50, 255));
+                    renderer.addGradientPoint(1, new ColorCafe(150, 130, 130, 255));
                     break;
                 case PLANET:
                     noise = terrain();
@@ -89,7 +89,7 @@ public class NoiseGen {
             perlin = new Perlin();
             perlin.setNoiseQuality(libnoiseforjava.NoiseGen.NoiseQuality.QUALITY_BEST);
             perlin.setSeed((int) (Math.random() * Integer.MAX_VALUE));
-            perlin.setFrequency(10);
+            perlin.setFrequency(2);
             perlin.setPersistence(.45);
             perlin.setLacunarity(2.5);
             perlin.setOctaveCount(6);
