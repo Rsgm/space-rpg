@@ -1,9 +1,6 @@
 package spacegame.game;
 
-import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.*;
 import spacegame.gui.Assets;
 import spacegame.gui.screens.MenuScreen;
 
@@ -12,6 +9,7 @@ public class SpaceGame extends Game {
     private Preferences save;
 
     private GamePlay gamePlay;
+    public static Screen screen;
 
     @Override
     public void create() {

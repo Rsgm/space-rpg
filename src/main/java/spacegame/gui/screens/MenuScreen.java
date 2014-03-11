@@ -49,6 +49,7 @@ public class MenuScreen extends DefaultScreen {
 
     @Override
     public void show() {
+        super.show();
         Gdx.input.setInputProcessor(stage);
         stage.setViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
     }

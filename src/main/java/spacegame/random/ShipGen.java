@@ -11,14 +11,14 @@ import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
 
-public class BattleshipGen {
-    public final ModelInstance ship;
+public class ShipGen {
+    public final ModelInstance model;
 
     private Vector3 hullOrigin;
     private Vector3 hullDiagonal;
     private int numberOfExtrusions;
 
-    public BattleshipGen() {
+    public ShipGen(NoiseGen noiseGen) {
         design();
 
         Texture t;
@@ -26,17 +26,17 @@ public class BattleshipGen {
         builder.begin();
 
         // hull
-        t = NoiseGen.getTexture(NoiseGen.TextureNoise.BATTLESHIP);
+        t = noiseGen.getTexture(NoiseGen.TextureNoise.FRIGATE, 7);
         Mesh hullMesh = genShipHullMesh();
         builder.part(null, hullMesh, GL30.GL_TRIANGLES, new Material(TextureAttribute.createDiffuse(t)));
 
-        for (int i = 0; i < numberOfExtrusions; i++) {
-            t = NoiseGen.getTexture(NoiseGen.TextureNoise.BATTLESHIP);
-            Mesh extrusionMesh = genShipExtrusionMesh(hullOrigin);
-            builder.part(null, extrusionMesh, GL30.GL_TRIANGLES, new Material(TextureAttribute.createDiffuse(t)));
-        }
+//        for (int i = 0; i < numberOfExtrusions; i++) {
+//            t = noiseGen.getTexture(NoiseGen.TextureNoise.FRIGATE, 7);
+//            Mesh extrusionMesh = genShipExtrusionMesh(hullOrigin);
+//            builder.part(null, extrusionMesh, GL30.GL_TRIANGLES, new Material(TextureAttribute.createDiffuse(t)));
+//        }
 
-        ship = new ModelInstance(builder.end());
+        model = new ModelInstance(builder.end());
     }
 
     private void design() {
@@ -44,8 +44,8 @@ public class BattleshipGen {
         int hullWidthMin = 5;
         int hullHeightRange = 3;
         int hullHeightMin = 4;
-        int hullDepthRange = 20;
-        int hullDepthMin = 20;
+        int hullDepthRange = 5;
+        int hullDepthMin = 5;
 
         hullDiagonal = new Vector3();
         hullDiagonal.x = (float) (Math.random() * hullWidthRange + hullWidthMin);
@@ -59,7 +59,7 @@ public class BattleshipGen {
 
     private Mesh genShipHullMesh() { // TODO read https://github.com/mattdesl/lwjgl-basics/wiki/LibGDX-Meshes
         MeshBuilder meshBuilder = new MeshBuilder();
-        meshBuilder.begin(VertexAttributes.Usage.Position | VertexAttributes.Usage.TextureCoordinates,
+        meshBuilder.begin(VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal | VertexAttributes.Usage.TextureCoordinates,
                 GL30.GL_TRIANGLES);
 
         meshBuilder.box(hullDiagonal.x, hullDiagonal.y, hullDiagonal.z);
@@ -68,7 +68,7 @@ public class BattleshipGen {
 
     private Mesh genShipExtrusionMesh(Vector3 origin) { // TODO read https://github.com/mattdesl/lwjgl-basics/wiki/LibGDX-Meshes
         MeshBuilder meshBuilder = new MeshBuilder();
-        meshBuilder.begin(VertexAttributes.Usage.Position | VertexAttributes.Usage.TextureCoordinates,
+        meshBuilder.begin(VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal | VertexAttributes.Usage.TextureCoordinates,
                 GL30.GL_TRIANGLES);
 
         Vector3 mountPoint = new Vector3();
@@ -150,7 +150,7 @@ public class BattleshipGen {
         return meshBuilder.end();
     }
 
-    public ModelInstance getShip() {
-        return ship;
+    public ModelInstance getModel() {
+        return model;
     }
 }

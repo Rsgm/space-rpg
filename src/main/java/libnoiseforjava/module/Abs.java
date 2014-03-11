@@ -35,7 +35,7 @@ public class Abs extends ModuleBase {
     ///
     /// This noise module requires one source module.
 
-    Abs(ModuleBase sourceModule) throws ExceptionInvalidParam {
+    public Abs(ModuleBase sourceModule) throws ExceptionInvalidParam {
         super(1);
         setSourceModule(0, sourceModule);
     }

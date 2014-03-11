@@ -43,6 +43,11 @@ public abstract class DefaultScreen implements Screen {
         gdxShader.dispose();
     }
 
+    @Override
+    public void show() {
+        SpaceGame.screen = this;
+    }
+
     public int getWidth() {
         return width;
     }
