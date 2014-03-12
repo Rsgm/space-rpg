@@ -8,7 +8,7 @@ import spacegame.game.Ship;
 
 public class SpaceInput extends CameraInputController {
     private final GamePlay gamePlay;
-    private final float turnSpeed = 0.1f;
+    private final float turnSpeed = 2f;
 
     private boolean wPressed = false;
     private boolean sPressed = false;
@@ -26,11 +26,13 @@ public class SpaceInput extends CameraInputController {
         translateTarget = false;
         forwardTarget = false;
 
-        scrollFactor = -100;
+        scrollFactor = -10;
 
         target = gamePlay.getPlayer().getShip().getPosition();
-        camera.position.set(target.cpy().add(10, 0, 10));
+        camera.position.set(target);
         camera.lookAt(target);
+
+//        zoom(-10);
     }
 
     @Override
@@ -40,25 +42,28 @@ public class SpaceInput extends CameraInputController {
 
     @Override
     public void update() {
+        target.add(gamePlay.getPlayer().getShip().getDeltaPosition());
+        camera.position.add(gamePlay.getPlayer().getShip().getDeltaPosition());
+
         if (wPressed || sPressed || aPressed || dPressed || qPressed || ePressed) {
             Ship ship = gamePlay.getPlayer().getShip();
             if (wPressed) {
-                ship.pitch(-turnSpeed);
+                ship.pitch += turnSpeed;
             }
             if (sPressed) {
-                ship.yaw(turnSpeed);
+                ship.pitch += -turnSpeed;
             }
             if (aPressed) {
-                ship.yaw(-turnSpeed);
+                ship.yaw += -turnSpeed;
             }
             if (dPressed) {
-                ship.yaw(turnSpeed);
+                ship.yaw += turnSpeed;
             }
             if (qPressed) {
-                ship.roll(-turnSpeed);
+                ship.roll += -turnSpeed;
             }
             if (ePressed) {
-                ship.roll(turnSpeed);
+                ship.roll += turnSpeed;
             }
             if (autoUpdate) {
                 camera.update();

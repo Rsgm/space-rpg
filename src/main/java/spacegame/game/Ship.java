@@ -2,6 +2,7 @@ package spacegame.game;
 
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 import spacegame.random.NoiseGen;
@@ -12,29 +13,48 @@ public class Ship implements Disposable {
     private Matrix4 transform;
     private ModelInstance modelInstance;
 
-    public Vector3 position; // in meters
+    private final Vector3 position;
+    private final Vector3 deltaPosition;
+    private final Vector3 direction;
     public float velocity; // meters per second
-    Vector3 direction;
-    Vector3 up;
 
+    public float yaw;
+    public float pitch;
+
+    public float roll;
     public boolean isLoaded = false;
 
     public Ship(Vector3 pos) {
-        position = new Vector3(pos);
-        velocity = 0;
-        direction = new Vector3(Vector3.X);
-        up = new Vector3(Vector3.Y);
+        position = pos;
+        deltaPosition = new Vector3();
+        direction = new Vector3(Vector3.Z);
+        velocity = 2f;
 
-        transform = new Matrix4().rotate(Vector3.Y, direction).trn(position);
+        yaw = 0;
+        pitch = 0;
+        roll = 0;
+
+        transform = new Matrix4().rotate(new Quaternion()).setFromEulerAngles(yaw, pitch, roll).trn(position);
     }
 
     /**
      * @param deltaTime The change in time in milliseconds.
      */
     public void update(int deltaTime) {
-        position.add(direction.cpy().scl((float) deltaTime / 1000f));
-        transform = new Matrix4().rotate(Vector3.X, direction).rotate(direction.cpy().crs(Vector3.Y), up).trn(position);
-//        modelInstance.transform = transform; // this should not be needed
+        Quaternion rotation = transform.getRotation(new Quaternion());
+
+        direction.set(Vector3.Z);
+        direction.set(rotation.transform(direction));
+
+        deltaPosition.set(direction.cpy().scl(velocity * (float) deltaTime / 1000f));
+        position.add(deltaTime);
+
+        transform.rotate(new Quaternion().setEulerAngles(yaw, pitch, roll)).trn(deltaPosition);
+        modelInstance.transform = transform;
+
+        yaw = 0;
+        pitch = 0;
+        roll = 0;
     }
 
     /**
@@ -45,7 +65,6 @@ public class Ship implements Disposable {
             return;
         }
         modelInstance = new ShipGen(noiseGen).getModel();
-        modelInstance.transform = transform;
     }
 
     /**
@@ -57,22 +76,6 @@ public class Ship implements Disposable {
             return;
         }
         modelInstance.model.dispose();
-
-    }
-
-    public void pitch(float angle) {
-        Vector3 cross = direction.cpy().crs(up);
-
-        direction.rotate(cross, angle);
-        up.rotate(cross, angle);
-    }
-
-    public void roll(float angle) {
-        up.rotate(direction, angle);
-    }
-
-    public void yaw(float angle) {
-        direction.rotate(up, angle);
     }
 
     public ModelInstance getModelInstance() {
@@ -81,5 +84,13 @@ public class Ship implements Disposable {
 
     public Vector3 getPosition() {
         return position.cpy();
+    }
+
+    public Vector3 getDeltaPosition() {
+        return deltaPosition;
+    }
+
+    public Vector3 getDirection() {
+        return direction;
     }
 }
