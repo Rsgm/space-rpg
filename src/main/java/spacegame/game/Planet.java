@@ -8,11 +8,12 @@ import spacegame.random.NoiseGen;
 import spacegame.random.PlanetGen;
 
 public class Planet implements Disposable { // TODO more planet types
-    private final NoiseGen noiseGen = new NoiseGen();
-    private final Matrix4 transform;
+    public final NoiseGen noiseGen = new NoiseGen();
+    public final Matrix4 transform;
     private ModelInstance modelInstance;
 
     final int radius;
+    public int resolution;
 
     public boolean isLoaded = false;
 
@@ -22,6 +23,7 @@ public class Planet implements Disposable { // TODO more planet types
         transform = new Matrix4().rotate(Vector3.Y, rot).trn(pos);
 
         radius = (int) (Math.random() * 200 + 1000);
+        resolution = 7;
     }
 
     /**
@@ -31,6 +33,7 @@ public class Planet implements Disposable { // TODO more planet types
         if (isLoaded) {
             return;
         }
+        isLoaded = true;
         modelInstance = new PlanetGen(noiseGen, radius).getModel();
         modelInstance.transform = transform;
     }
@@ -43,6 +46,7 @@ public class Planet implements Disposable { // TODO more planet types
         if (!isLoaded) {
             return;
         }
+        isLoaded = false;
         modelInstance.model.dispose();
     }
 

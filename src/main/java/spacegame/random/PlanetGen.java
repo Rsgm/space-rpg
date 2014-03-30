@@ -1,5 +1,6 @@
 package spacegame.random;
 
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g3d.Material;
@@ -11,7 +12,11 @@ public class PlanetGen {
     public final ModelInstance model;
 
     public PlanetGen(NoiseGen noiseGen, int radius) {
-        Texture t = noiseGen.getTexture(NoiseGen.TextureNoise.PLANET, 7);
+        Pixmap pixmap = noiseGen.getTexture(NoiseGen.TextureNoise.PLANET, 7);
+        Texture t = new Texture(pixmap);
+        t.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        pixmap.dispose();
+
         ModelBuilder builder = new ModelBuilder();
 
         model = new ModelInstance(builder.createSphere(radius * 2, radius * 2, radius * 2, 32, 16, new Material(TextureAttribute.createDiffuse(t)),

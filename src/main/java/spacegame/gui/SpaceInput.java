@@ -1,5 +1,6 @@
 package spacegame.gui;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
@@ -8,14 +9,17 @@ import spacegame.game.Ship;
 
 public class SpaceInput extends CameraInputController {
     private final GamePlay gamePlay;
-    private final float turnSpeed = 2f;
+    private final float turnSpeed = 40f;
+    private final float accelleration = 100f;
 
-    private boolean wPressed = false;
-    private boolean sPressed = false;
-    private boolean aPressed = false;
-    private boolean dPressed = false;
-    private boolean qPressed = false;
-    private boolean ePressed = false;
+    private boolean wPressed;
+    private boolean sPressed;
+    private boolean aPressed;
+    private boolean dPressed;
+    private boolean qPressed;
+    private boolean ePressed;
+    private boolean shiftPressed;
+    private boolean controlPressed;
 
     public SpaceInput(Camera camera, GamePlay gamePlay) {
         super(camera);
@@ -42,28 +46,36 @@ public class SpaceInput extends CameraInputController {
 
     @Override
     public void update() {
+        float deltaTime = Gdx.graphics.getDeltaTime();
+
         target.add(gamePlay.getPlayer().getShip().getDeltaPosition());
         camera.position.add(gamePlay.getPlayer().getShip().getDeltaPosition());
 
-        if (wPressed || sPressed || aPressed || dPressed || qPressed || ePressed) {
+        if (wPressed || sPressed || aPressed || dPressed || qPressed || ePressed || shiftPressed || controlPressed) {
             Ship ship = gamePlay.getPlayer().getShip();
             if (wPressed) {
-                ship.pitch += turnSpeed;
+                ship.pitch += turnSpeed * deltaTime;
             }
             if (sPressed) {
-                ship.pitch += -turnSpeed;
+                ship.pitch += -turnSpeed * deltaTime;
             }
             if (aPressed) {
-                ship.yaw += -turnSpeed;
+                ship.yaw += turnSpeed * deltaTime;
             }
             if (dPressed) {
-                ship.yaw += turnSpeed;
+                ship.yaw += -turnSpeed * deltaTime;
             }
             if (qPressed) {
-                ship.roll += -turnSpeed;
+                ship.roll += -turnSpeed * deltaTime;
             }
             if (ePressed) {
-                ship.roll += turnSpeed;
+                ship.roll += turnSpeed * deltaTime;
+            }
+            if (shiftPressed) {
+                ship.velocity += accelleration * deltaTime;
+            }
+            if (controlPressed) {
+                ship.velocity -= accelleration * deltaTime;
             }
             if (autoUpdate) {
                 camera.update();
@@ -94,6 +106,12 @@ public class SpaceInput extends CameraInputController {
             case Input.Keys.E:
                 ePressed = true;
                 break;
+            case Input.Keys.SHIFT_LEFT:
+                shiftPressed = true;
+                break;
+            case Input.Keys.CONTROL_LEFT:
+                controlPressed = true;
+                break;
         }
 
         return true;
@@ -121,6 +139,13 @@ public class SpaceInput extends CameraInputController {
                 break;
             case Input.Keys.E:
                 ePressed = false;
+                break;
+
+            case Input.Keys.SHIFT_LEFT:
+                shiftPressed = false;
+                break;
+            case Input.Keys.CONTROL_LEFT:
+                controlPressed = false;
                 break;
         }
         return true;

@@ -4,10 +4,12 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import spacegame.game.SpaceGame;
 
+import java.io.IOException;
+
 public class Main {
     public static final SpaceGame game = new SpaceGame();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.resizable = false;
         config.useGL30 = true;

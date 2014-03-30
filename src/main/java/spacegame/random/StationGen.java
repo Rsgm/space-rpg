@@ -1,9 +1,6 @@
 package spacegame.random;
 
-import com.badlogic.gdx.graphics.GL30;
-import com.badlogic.gdx.graphics.Mesh;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.VertexAttributes;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
@@ -27,7 +24,11 @@ public class StationGen {
         builder.begin();
 
         for (HullPiece piece : pieces) {
-            t = noiseGen.getTexture(NoiseGen.TextureNoise.STATION, 7);
+            Pixmap pixmap = noiseGen.getTexture(NoiseGen.TextureNoise.STATION, 7);
+            t = new Texture(pixmap);
+            t.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+            pixmap.dispose();
+
             Mesh hullMesh = genStationHullMesh(piece.size);
             hullMesh.transform(piece.transform);
 

@@ -20,8 +20,8 @@ public class Ship implements Disposable {
 
     public float yaw;
     public float pitch;
-
     public float roll;
+
     public boolean isLoaded = false;
 
     public Ship(Vector3 pos) {
@@ -29,10 +29,6 @@ public class Ship implements Disposable {
         deltaPosition = new Vector3();
         direction = new Vector3(Vector3.Z);
         velocity = 2f;
-
-        yaw = 0;
-        pitch = 0;
-        roll = 0;
 
         transform = new Matrix4().rotate(new Quaternion()).setFromEulerAngles(yaw, pitch, roll).trn(position);
     }

@@ -2,7 +2,6 @@ package spacegame.random;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import libnoiseforjava.exception.ExceptionInvalidParam;
 import libnoiseforjava.module.*;
 import libnoiseforjava.util.*;
@@ -14,7 +13,7 @@ public class NoiseGen {
     private static final Random RANDOM = new Random();
     private final int seed = RANDOM.nextInt();
 
-    public Texture getTexture(TextureNoise type, int resolution) {
+    public Pixmap getTexture(TextureNoise type, int resolution) {
         try {
             ModuleBase noise = null;
             NoiseMapBuilder builder = null;
@@ -22,7 +21,7 @@ public class NoiseGen {
             int width = 0;
             int height = 0;
 
-            int size = 100;//NOISE_GEN_SIZE[resolution];
+            int size = NOISE_GEN_SIZE[resolution];
             switch (type) {
                 case FRIGATE:
                     noise = frigate();
@@ -100,10 +99,7 @@ public class NoiseGen {
                 }
             }
 
-            Texture texture = new Texture(pixmap);
-            texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-            pixmap.dispose();
-            return texture;
+            return pixmap;
         } catch (ExceptionInvalidParam exceptionInvalidParam) {
             exceptionInvalidParam.printStackTrace();
         }

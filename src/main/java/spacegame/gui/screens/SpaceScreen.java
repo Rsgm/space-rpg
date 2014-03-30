@@ -54,7 +54,7 @@ public class SpaceScreen extends DefaultScreen {
     @Override
     public void render(float delta) {
         super.render(delta);
-        System.out.println(1f / delta);
+//        System.out.println(1f / delta);
 
         input.update(); // this causes the camera to update twice, maybe remove the camera update from the super class method
 
