@@ -20,6 +20,7 @@ public class SpaceInput extends CameraInputController {
     private boolean ePressed;
     private boolean shiftPressed;
     private boolean controlPressed;
+    private boolean spacePressed;
 
     public SpaceInput(Camera camera, GamePlay gamePlay) {
         super(camera);
@@ -77,6 +78,9 @@ public class SpaceInput extends CameraInputController {
             if (controlPressed) {
                 ship.velocity -= accelleration * deltaTime;
             }
+            if (spacePressed) {
+                ship.velocity = 0;
+            }
             if (autoUpdate) {
                 camera.update();
             }
@@ -105,6 +109,10 @@ public class SpaceInput extends CameraInputController {
                 break;
             case Input.Keys.E:
                 ePressed = true;
+                break;
+
+            case Input.Keys.SPACE:
+                spacePressed = true;
                 break;
             case Input.Keys.SHIFT_LEFT:
                 shiftPressed = true;
@@ -141,6 +149,9 @@ public class SpaceInput extends CameraInputController {
                 ePressed = false;
                 break;
 
+            case Input.Keys.SPACE:
+                spacePressed = false;
+                break;
             case Input.Keys.SHIFT_LEFT:
                 shiftPressed = false;
                 break;

@@ -12,7 +12,7 @@ public class PlanetGen {
     public final ModelInstance model;
 
     public PlanetGen(NoiseGen noiseGen, int radius) {
-        Pixmap pixmap = noiseGen.getTexture(NoiseGen.TextureNoise.PLANET, 7);
+        Pixmap pixmap = noiseGen.getTexture(NoiseGen.TextureNoise.PLANET, /*7*/3);
         Texture t = new Texture(pixmap);
         t.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         pixmap.dispose();

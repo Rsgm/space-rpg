@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import spacegame.game.SpaceGame;
 import spacegame.gui.Assets;
 
@@ -34,10 +35,18 @@ public class MenuScreen extends DefaultScreen {
         table.add(new TextButton("Settings", Assets.skin));
         table.row();
         table.add(new TextButton("Quit", Assets.skin));
-//        table.row();
-//        table.add(new Image(NoiseGen.getTexture(NoiseGen.TextureNoise.BATTLESHIP)));
 
         start.addListener(new ClickListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                super.touchUp(event, x, y, pointer, button);
+            }
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
@@ -51,7 +60,7 @@ public class MenuScreen extends DefaultScreen {
     public void show() {
         super.show();
         Gdx.input.setInputProcessor(stage);
-        stage.setViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+        stage.setViewport(new ScreenViewport(cam));
     }
 
     @Override

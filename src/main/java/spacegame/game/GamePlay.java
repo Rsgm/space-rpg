@@ -44,7 +44,7 @@ public class GamePlay {
     }
 
     private void createUniverse() {
-        int planetAmount = 1;//(int) (Math.random() * 1000 + 500);
+        int planetAmount = /*1;//*/ 8; //(int) (Math.random() * 1000 + 500);
 //        int stationAmount = (int) (Math.random() * planetAmount / 2 + planetAmount / 2);
 //        int characterAmount = (int) (Math.random() * 50 + 50);
 

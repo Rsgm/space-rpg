@@ -2,7 +2,7 @@ package spacegame.game;
 
 import com.badlogic.gdx.*;
 import spacegame.gui.Assets;
-import spacegame.gui.screens.MenuScreen;
+import spacegame.gui.screens.SpaceScreen;
 
 public class SpaceGame extends Game {
     private Preferences prefs;
@@ -31,7 +31,7 @@ public class SpaceGame extends Game {
 
         Gdx.app.setLogLevel(prefs.getInteger("log-level")); // TODO save a copy of the console to a log file
 
-        setScreen(new MenuScreen(this));
+        setScreen(new SpaceScreen(this));
     }
 
     private void newPrefs() {
